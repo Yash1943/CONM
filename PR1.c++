@@ -1,66 +1,43 @@
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-float u_cal(float u, int n)
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+#define f(x) (x * x * x) - x -1
+void main()
 {
-	float temp = u;
-	for (int i = 1; i < n; i++)
-		temp = temp * (u - i);
-	return temp;
+float x0,x1,x2,f0,f1,f2,e;
+int step=1;
+clrscr();
+up:
+printf("\n Enter the values of x0 and x1\n");
+scanf("%f%f", &x0, &x1);
+printf("Enter tolerate eroor:\n");
+scanf("%f", &e);
+f0=f(x0);
+f1=f(x1);
+if( f0 * f1 > 0.0)
+{
+printf("Incorrect inicial gusses. \n");
+goto up;
 }
-
-
-int fact(int n)
+printf("\nsteps\t\tx0\t\tx1\t\tx2\t\tf(x2)\n");
+do
 {
-	int f = 1;
-	for (int i = 2; i <= n; i++)
-		f *= i;
-	return f;
+x2 = (x0 + x1)/2;
+f2 = f(x2);
+printf("%d\t\t%f\t%f\t%f\t%f\n",step,x0,x1,x2,f2);
+if( f0 * f2 < 0)
+{
+x1 = x2;
+f1 = f2;
 }
-
-int main()
+else
 {
-
-	int n = 4;
-	float x[] = { 3.49,4.82,5.96,6.5 };
-	
-
-	float y[n][n];
-	y[0][0] = 1.33;
-	y[1][0] = 1.14;
-	y[2][0] = 0.54;
-//	y[3][0] = 0.8660;
-
-
-	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n - i; j++)
-			y[j][i] = y[j + 1][i - 1] - y[j][i - 1];
-	}
-
-
-	for (int i = 0; i < n; i++) {
-		cout << setw(4) << x[i]
-			<< "\t";
-		for (int j = 0; j < n - i; j++)
-			cout << setw(4) << y[i][j]
-				<< "\t";
-		cout << endl;
-	}
-
-
-	float value = 1.5;
-
-
-	float sum = y[0][0];
-	float u = (value - x[0]) / (x[1] - x[0]);
-	for (int i = 1; i < n; i++) {
-		sum = sum + (u_cal(u, i) * y[0][i]) /
-								fact(i);
-	}
-
-	cout << "\n Value at " << value << " is "
-		<< sum << endl;
-	return 0;
+x0 = x2;
+f0 = f2;
+}
+step = step + 1;
+}
+while(fabs(f2)>e);
+printf("\n Root is:%f",x2);
+getch();
 }
